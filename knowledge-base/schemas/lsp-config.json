@@ -1,0 +1,79 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LSP Configuration Schema",
+  "description": "Schema for .lsp.json Language Server Protocol configuration",
+  "type": "object",
+  "properties": {
+    "lspServers": {
+      "type": "object",
+      "description": "Map of LSP server configurations by language or identifier",
+      "additionalProperties": {
+        "$ref": "#/definitions/lspServer"
+      }
+    }
+  },
+  "definitions": {
+    "lspServer": {
+      "type": "object",
+      "description": "LSP server configuration",
+      "properties": {
+        "command": {
+          "type": "string",
+          "description": "Command to start the LSP server"
+        },
+        "args": {
+          "type": "array",
+          "description": "Command line arguments for the server",
+          "items": {"type": "string"}
+        },
+        "env": {
+          "type": "object",
+          "description": "Environment variables for the server process",
+          "additionalProperties": {"type": "string"}
+        },
+        "rootUri": {
+          "type": "string",
+          "description": "Root URI for the workspace"
+        },
+        "initializationOptions": {
+          "type": "object",
+          "description": "Server-specific initialization options"
+        },
+        "languages": {
+          "type": "array",
+          "description": "Language identifiers this server handles",
+          "items": {"type": "string"}
+        },
+        "filePatterns": {
+          "type": "array",
+          "description": "File glob patterns this server handles",
+          "items": {"type": "string"}
+        }
+      },
+      "required": ["command"]
+    }
+  },
+  "required": ["lspServers"],
+  "examples": [
+    {
+      "lspServers": {
+        "typescript": {
+          "command": "typescript-language-server",
+          "args": ["--stdio"],
+          "languages": ["typescript", "javascript", "typescriptreact", "javascriptreact"],
+          "filePatterns": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"]
+        },
+        "python": {
+          "command": "pylsp",
+          "languages": ["python"],
+          "filePatterns": ["**/*.py"]
+        },
+        "rust": {
+          "command": "rust-analyzer",
+          "languages": ["rust"],
+          "filePatterns": ["**/*.rs"]
+        }
+      }
+    }
+  ]
+}

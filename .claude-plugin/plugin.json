@@ -1,0 +1,26 @@
+{
+  "name": "skill-agent-plugin-hook-constructor",
+  "version": "1.0.0",
+  "description": "Ultimate constructor for Claude Code components with full self-* pipeline. Creates skills, agents, plugins, hooks through guided Q&A with self-testing, self-review, self-acceptance, self-refactor, self-finalizer, and self-architect capabilities. Features 18 specialized agents, context-aware self-learning, and comprehensive knowledge base.",
+  "author": {
+    "name": "claude-plugin"
+  },
+  "keywords": [
+    "claude-code",
+    "constructor",
+    "skill-creator",
+    "agent-creator",
+    "plugin-creator",
+    "hook-creator",
+    "self-learning",
+    "self-improving",
+    "meta-tool",
+    "automation"
+  ],
+  "commands": "./commands/",
+  "agents": "./agents/",
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json",
+  "repository": "https://github.com/claude-plugin/skill-agent-plugin-hook-constructor",
+  "license": "MIT"
+}

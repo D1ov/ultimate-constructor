@@ -1,0 +1,16 @@
+{
+  "component": "{{skill_name}}",
+  "type": "skill",
+  "version": "1.0.0",
+  "domain_patterns": [],
+  "knowledge_gaps": [],
+  "useful_examples": [],
+  "learning_stats": {
+    "total_sessions": 0,
+    "patterns_learned": 0,
+    "gaps_identified": 0,
+    "examples_added": 0,
+    "last_session": null
+  },
+  "last_updated": null
+}

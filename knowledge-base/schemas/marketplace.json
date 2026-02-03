@@ -1,0 +1,149 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Marketplace Plugin Schema",
+  "description": "Schema for marketplace.json plugin listing configuration",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Display name for marketplace listing"
+    },
+    "slug": {
+      "type": "string",
+      "description": "URL-friendly identifier",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "version": {
+      "type": "string",
+      "description": "Current version",
+      "pattern": "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9.]+)?$"
+    },
+    "description": {
+      "type": "string",
+      "description": "Short description for listing (max 200 chars)",
+      "maxLength": 200
+    },
+    "longDescription": {
+      "type": "string",
+      "description": "Detailed description with markdown support"
+    },
+    "author": {
+      "type": "object",
+      "properties": {
+        "name": {"type": "string"},
+        "email": {"type": "string"},
+        "url": {"type": "string"},
+        "verified": {"type": "boolean"}
+      },
+      "required": ["name"]
+    },
+    "repository": {
+      "type": "string",
+      "description": "GitHub repository URL",
+      "format": "uri"
+    },
+    "homepage": {
+      "type": "string",
+      "format": "uri"
+    },
+    "keywords": {
+      "type": "array",
+      "items": {"type": "string"},
+      "maxItems": 15
+    },
+    "categories": {
+      "type": "array",
+      "description": "Marketplace categories",
+      "items": {
+        "type": "string",
+        "enum": [
+          "productivity",
+          "development",
+          "testing",
+          "documentation",
+          "integration",
+          "security",
+          "ai-enhancement",
+          "workflow",
+          "utilities",
+          "other"
+        ]
+      }
+    },
+    "license": {
+      "type": "string",
+      "description": "SPDX license identifier"
+    },
+    "pricing": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["free", "paid", "freemium"]
+        },
+        "price": {"type": "number"},
+        "currency": {"type": "string", "default": "USD"}
+      }
+    },
+    "screenshots": {
+      "type": "array",
+      "description": "Screenshot URLs for marketplace listing",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {"type": "string", "format": "uri"},
+          "caption": {"type": "string"}
+        },
+        "required": ["url"]
+      }
+    },
+    "icon": {
+      "type": "string",
+      "description": "Plugin icon URL or relative path"
+    },
+    "minClaudeVersion": {
+      "type": "string",
+      "description": "Minimum Claude Code version required"
+    },
+    "platforms": {
+      "type": "array",
+      "description": "Supported platforms",
+      "items": {
+        "type": "string",
+        "enum": ["windows", "macos", "linux"]
+      }
+    },
+    "installCount": {
+      "type": "integer",
+      "description": "Number of installations (auto-populated)"
+    },
+    "rating": {
+      "type": "number",
+      "description": "Average rating (auto-populated)",
+      "minimum": 0,
+      "maximum": 5
+    },
+    "featured": {
+      "type": "boolean",
+      "description": "Whether plugin is featured"
+    },
+    "verified": {
+      "type": "boolean",
+      "description": "Whether plugin is verified by Anthropic"
+    }
+  },
+  "required": ["name", "slug", "version", "description", "author"],
+  "examples": [
+    {
+      "name": "Ultimate Constructor",
+      "slug": "ultimate-constructor",
+      "version": "1.0.0",
+      "description": "Create Claude Code skills, agents, plugins, and hooks with guided Q&A",
+      "author": {"name": "Developer", "verified": true},
+      "categories": ["development", "productivity", "ai-enhancement"],
+      "keywords": ["constructor", "skill", "agent", "plugin", "hooks"],
+      "license": "MIT",
+      "pricing": {"type": "free"}
+    }
+  ]
+}

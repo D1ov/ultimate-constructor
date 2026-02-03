@@ -1,0 +1,16 @@
+{
+  "component": "{{agent_name}}",
+  "type": "agent",
+  "version": "1.0.0",
+  "patterns": [],
+  "edit_history": [],
+  "quality_history": [],
+  "learning_stats": {
+    "total_sessions": 0,
+    "patterns_learned": 0,
+    "quality_improvements": 0,
+    "security_findings": 0,
+    "last_session": null
+  },
+  "last_updated": null
+}

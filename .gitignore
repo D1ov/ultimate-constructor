@@ -1,0 +1,29 @@
+# Session data (user-specific)
+learned/sessions/
+learned/improvements/*.json
+learned/test-results/*.json
+
+# Patterns are user-specific learning
+learned/patterns.json
+
+# Keep directory structure
+!learned/.gitkeep
+!learned/sessions/.gitkeep
+!learned/improvements/.gitkeep
+!learned/test-results/.gitkeep
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Temp files
+*.tmp
+*.bak
+*.swp
+
+# Logs
+*.log

@@ -1,0 +1,93 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-02-03",
+  "description": "Knowledge base for Ultimate Constructor plugin - comprehensive Claude Code documentation and schemas",
+  "sources": [
+    "https://code.claude.com/docs/en/sub-agents",
+    "https://code.claude.com/docs/en/plugins",
+    "https://code.claude.com/docs/en/plugins-reference",
+    "https://code.claude.com/docs/en/skills",
+    "https://code.claude.com/docs/en/hooks",
+    "https://code.claude.com/docs/en/hooks-reference",
+    "https://code.claude.com/docs/en/output-styles"
+  ],
+  "documents": {
+    "sub-agents": {
+      "file": "sub-agents.md",
+      "description": "Complete sub-agents guide: built-in agents, custom creation, configuration",
+      "topics": ["built-in-agents", "explore", "plan", "custom-agents", "task-tool", "delegation", "parallel-execution", "resumable"]
+    },
+    "plugins": {
+      "file": "plugins.md",
+      "description": "Plugin creation guide: structure, manifest, components, distribution",
+      "topics": ["plugin-structure", "manifest", "commands", "agents", "skills", "hooks", "installation", "marketplace"]
+    },
+    "skills": {
+      "file": "skills.md",
+      "description": "Skills documentation: structure, frontmatter, progressive disclosure",
+      "topics": ["skill-structure", "frontmatter", "description", "allowed-tools", "progressive-disclosure", "activation"]
+    },
+    "hooks": {
+      "file": "hooks.md",
+      "description": "Hooks guide: event-driven automation, validation, integration",
+      "topics": ["hook-types", "prompt-hooks", "command-hooks", "events", "matchers", "environment-variables"]
+    },
+    "hooks-reference": {
+      "file": "hooks-reference.md",
+      "description": "Hooks technical reference: schemas, events, input/output formats",
+      "topics": ["schema", "pretooluse", "posttooluse", "stop", "sessionstart", "matchers", "exit-codes"]
+    },
+    "output-styles": {
+      "file": "output-styles.md",
+      "description": "Output styles configuration: formatting, verbosity, colors",
+      "topics": ["format", "verbosity", "code-blocks", "colors", "presets", "cli-overrides"]
+    }
+  },
+  "schemas": {
+    "skill-frontmatter": {
+      "file": "schemas/skill-frontmatter.json",
+      "description": "SKILL.md YAML frontmatter validation schema",
+      "validates": "SKILL.md frontmatter"
+    },
+    "agent-frontmatter": {
+      "file": "schemas/agent-frontmatter.json",
+      "description": "Agent markdown YAML frontmatter validation schema",
+      "validates": "Agent .md frontmatter"
+    },
+    "plugin-manifest": {
+      "file": "schemas/plugin-manifest.json",
+      "description": "plugin.json manifest validation schema",
+      "validates": ".claude-plugin/plugin.json"
+    },
+    "hooks-config": {
+      "file": "schemas/hooks-config.json",
+      "description": "hooks.json configuration validation schema",
+      "validates": "hooks/hooks.json"
+    },
+    "mcp-config": {
+      "file": "schemas/mcp-config.json",
+      "description": "MCP server configuration validation schema",
+      "validates": ".mcp.json"
+    },
+    "lsp-config": {
+      "file": "schemas/lsp-config.json",
+      "description": "LSP server configuration validation schema",
+      "validates": ".lsp.json"
+    },
+    "command-frontmatter": {
+      "file": "schemas/command-frontmatter.json",
+      "description": "Command markdown YAML frontmatter validation schema",
+      "validates": "commands/*.md frontmatter"
+    },
+    "marketplace": {
+      "file": "schemas/marketplace.json",
+      "description": "Marketplace listing configuration schema",
+      "validates": "marketplace.json"
+    }
+  },
+  "usage": {
+    "validation": "Use schemas to validate component structure before creation",
+    "reference": "Consult documents for best practices and patterns",
+    "examples": "Each schema includes examples section with valid configurations"
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Skill Frontmatter Schema",
+  "description": "Schema for SKILL.md YAML frontmatter in Claude Code",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Unique identifier (lowercase letters, numbers, hyphens only, max 64 chars)",
+      "pattern": "^[a-z0-9-]+$",
+      "maxLength": 64
+    },
+    "description": {
+      "type": "string",
+      "description": "What the skill does and when to use it. Claude uses this to decide when to apply the skill.",
+      "maxLength": 1024
+    },
+    "argument-hint": {
+      "type": "string",
+      "description": "Hint shown during autocomplete to indicate expected arguments",
+      "examples": ["[issue-number]", "[filename] [format]"]
+    },
+    "disable-model-invocation": {
+      "type": "boolean",
+      "description": "If true, prevents Claude from automatically loading this skill",
+      "default": false
+    },
+    "user-invocable": {
+      "type": "boolean",
+      "description": "If false, hides from the / menu",
+      "default": true
+    },
+    "allowed-tools": {
+      "type": "string",
+      "description": "Tools Claude can use without asking permission when this skill is active",
+      "examples": ["Read, Grep, Glob", "Bash(git:*,npm:run),Read,Write"]
+    },
+    "model": {
+      "type": "string",
+      "description": "Model to use when this skill is active",
+      "enum": ["sonnet", "opus", "haiku", "inherit"]
+    },
+    "context": {
+      "type": "string",
+      "description": "Set to 'fork' to run in a forked subagent context",
+      "enum": ["fork"]
+    },
+    "agent": {
+      "type": "string",
+      "description": "Which subagent type to use when context: fork is set",
+      "examples": ["Explore", "Plan", "general-purpose"]
+    },
+    "hooks": {
+      "type": "object",
+      "description": "Hooks scoped to this skill's lifecycle"
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version of the skill",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "tags": {
+      "type": "array",
+      "description": "Tags for categorization",
+      "items": {"type": "string"}
+    }
+  },
+  "required": ["name", "description"],
+  "additionalProperties": true,
+  "allParameters": {
+    "required": ["name", "description"],
+    "optional": [
+      "version",
+      "argument-hint",
+      "disable-model-invocation",
+      "user-invocable",
+      "allowed-tools",
+      "model",
+      "context",
+      "agent",
+      "hooks",
+      "tags"
+    ]
+  },
+  "examples": [
+    {
+      "name": "api-testing",
+      "description": "Tests API endpoints and validates responses. Use when testing REST APIs, GraphQL endpoints, or webhooks. NOT for frontend testing or database operations.",
+      "version": "1.0.0",
+      "allowed-tools": "Bash(curl:*),Read,Write",
+      "model": "sonnet",
+      "tags": ["testing", "api"]
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Command Frontmatter Schema",
+  "description": "Schema for command markdown YAML frontmatter in Claude Code plugins",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Command name (becomes /pluginname:commandname)",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "description": {
+      "type": "string",
+      "description": "Brief description shown in command help"
+    },
+    "args": {
+      "type": "array",
+      "description": "Command arguments specification",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string"},
+          "description": {"type": "string"},
+          "required": {"type": "boolean", "default": false},
+          "type": {
+            "type": "string",
+            "enum": ["string", "number", "boolean", "file", "directory"]
+          },
+          "default": {}
+        },
+        "required": ["name"]
+      }
+    },
+    "examples": {
+      "type": "array",
+      "description": "Usage examples",
+      "items": {"type": "string"}
+    },
+    "model": {
+      "type": "string",
+      "description": "Model to use for command execution",
+      "enum": ["sonnet", "opus", "haiku", "inherit"]
+    },
+    "tools": {
+      "type": "string",
+      "description": "Comma-separated list of allowed tools"
+    },
+    "skills": {
+      "type": "string",
+      "description": "Comma-separated skills to auto-load"
+    }
+  },
+  "required": ["name", "description"],
+  "examples": [
+    {
+      "name": "create",
+      "description": "Create a new Claude Code component",
+      "args": [
+        {"name": "type", "description": "Component type: skill, agent, plugin, hook", "required": true},
+        {"name": "name", "description": "Component name", "required": false}
+      ],
+      "examples": ["/uc:create skill", "/uc:create agent my-agent"],
+      "model": "sonnet",
+      "tools": "Read, Write, Edit, Glob, Grep, Bash, Task, AskUserQuestion"
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MCP Configuration Schema",
+  "description": "Schema for .mcp.json Model Context Protocol server configuration",
+  "type": "object",
+  "properties": {
+    "mcpServers": {
+      "type": "object",
+      "description": "Map of MCP server configurations",
+      "additionalProperties": {
+        "$ref": "#/definitions/mcpServer"
+      }
+    }
+  },
+  "definitions": {
+    "mcpServer": {
+      "type": "object",
+      "description": "MCP server configuration",
+      "oneOf": [
+        {"$ref": "#/definitions/stdioServer"},
+        {"$ref": "#/definitions/sseServer"}
+      ]
+    },
+    "stdioServer": {
+      "type": "object",
+      "description": "Stdio-based MCP server",
+      "properties": {
+        "command": {
+          "type": "string",
+          "description": "Command to run the MCP server"
+        },
+        "args": {
+          "type": "array",
+          "description": "Command line arguments",
+          "items": {"type": "string"}
+        },
+        "env": {
+          "type": "object",
+          "description": "Environment variables for the server process",
+          "additionalProperties": {"type": "string"}
+        },
+        "cwd": {
+          "type": "string",
+          "description": "Working directory for the server process"
+        }
+      },
+      "required": ["command"]
+    },
+    "sseServer": {
+      "type": "object",
+      "description": "SSE-based MCP server",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "URL of the SSE MCP server",
+          "format": "uri"
+        },
+        "headers": {
+          "type": "object",
+          "description": "HTTP headers for SSE connection",
+          "additionalProperties": {"type": "string"}
+        }
+      },
+      "required": ["url"]
+    }
+  },
+  "required": ["mcpServers"],
+  "examples": [
+    {
+      "mcpServers": {
+        "filesystem": {
+          "command": "npx",
+          "args": ["-y", "@anthropic/mcp-server-filesystem", "/path/to/dir"]
+        },
+        "github": {
+          "command": "npx",
+          "args": ["-y", "@anthropic/mcp-server-github"],
+          "env": {
+            "GITHUB_TOKEN": "${GITHUB_TOKEN}"
+          }
+        },
+        "remote-api": {
+          "url": "https://api.example.com/mcp/sse",
+          "headers": {
+            "Authorization": "Bearer ${API_TOKEN}"
+          }
+        }
+      }
+    }
+  ]
+}

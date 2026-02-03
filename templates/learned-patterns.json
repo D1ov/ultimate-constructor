@@ -1,0 +1,13 @@
+{
+  "component": "{{component_name}}",
+  "version": "1.0.0",
+  "patterns": [],
+  "edit_history": [],
+  "learning_stats": {
+    "total_sessions": 0,
+    "patterns_learned": 0,
+    "corrections_applied": 0,
+    "last_session": null
+  },
+  "last_updated": null
+}

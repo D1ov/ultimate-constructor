@@ -1,0 +1,53 @@
+{
+  "description": "{{description}}",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "{{pretool_matcher}}",
+        "hooks": [
+          {
+            "type": "{{pretool_type}}",
+            "{{pretool_type}}": "{{pretool_value}}",
+            "timeout": {{pretool_timeout}}
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "{{posttool_matcher}}",
+        "hooks": [
+          {
+            "type": "{{posttool_type}}",
+            "{{posttool_type}}": "{{posttool_value}}",
+            "timeout": {{posttool_timeout}}
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "{{stop_prompt}}",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "{{session_start_command}}",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

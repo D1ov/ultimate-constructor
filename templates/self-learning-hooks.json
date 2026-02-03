@@ -1,0 +1,29 @@
+{
+  "description": "Self-learning hooks for {{component_name}}. Extracts patterns and learns from usage.",
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Analyze this session for learnable patterns related to {{component_purpose}}. Check: 1) User corrections - what did they fix? 2) Error resolutions - what problems were solved? 3) Repeated workflows - what patterns emerged? 4) Quality improvements - what could be better? Return JSON: {\"learned\": bool, \"patterns\": [{\"type\": \"correction|resolution|workflow|quality\", \"description\": \"...\", \"confidence\": 0.0-1.0}]}. If nothing learned, return {\"learned\": false, \"patterns\": []}.",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"${CLAUDE_PLUGIN_ROOT}/scripts/validate_and_learn.py\" \"{{component_name}}\"",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  }
+}

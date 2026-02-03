@@ -1,0 +1,136 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Hooks Configuration Schema",
+  "description": "Schema for hooks.json configuration in Claude Code plugins",
+  "type": "object",
+  "properties": {
+    "description": {
+      "type": "string",
+      "description": "Optional description of hooks in this configuration"
+    },
+    "hooks": {
+      "type": "object",
+      "description": "Hook events container (required for plugin hooks.json format)",
+      "properties": {
+        "PreToolUse": {"$ref": "#/definitions/hookEventArray"},
+        "PostToolUse": {"$ref": "#/definitions/hookEventArray"},
+        "Stop": {"$ref": "#/definitions/hookEventArray"},
+        "SubagentStop": {"$ref": "#/definitions/hookEventArray"},
+        "UserPromptSubmit": {"$ref": "#/definitions/hookEventArray"},
+        "SessionStart": {"$ref": "#/definitions/hookEventArray"},
+        "SessionEnd": {"$ref": "#/definitions/hookEventArray"},
+        "PreCompact": {"$ref": "#/definitions/hookEventArray"},
+        "Notification": {"$ref": "#/definitions/hookEventArray"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "definitions": {
+    "hookEventArray": {
+      "type": "array",
+      "description": "Array of hook matchers for an event",
+      "items": {"$ref": "#/definitions/hookMatcher"}
+    },
+    "hookMatcher": {
+      "type": "object",
+      "description": "Matcher configuration for hooks",
+      "properties": {
+        "matcher": {
+          "type": "string",
+          "description": "Tool name pattern: exact name, pipe-separated list, regex, or '*' for all",
+          "examples": ["Write", "Read|Write|Edit", "mcp__.*", "*"]
+        },
+        "hooks": {
+          "type": "array",
+          "description": "Array of hooks to execute when matcher matches",
+          "items": {"$ref": "#/definitions/hook"}
+        }
+      },
+      "required": ["matcher", "hooks"]
+    },
+    "hook": {
+      "type": "object",
+      "description": "Individual hook configuration",
+      "oneOf": [
+        {"$ref": "#/definitions/promptHook"},
+        {"$ref": "#/definitions/commandHook"}
+      ]
+    },
+    "promptHook": {
+      "type": "object",
+      "description": "LLM-driven prompt-based hook",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "prompt"
+        },
+        "prompt": {
+          "type": "string",
+          "description": "Prompt for LLM evaluation. Use $TOOL_INPUT, $TOOL_RESULT, $USER_PROMPT for context."
+        },
+        "timeout": {
+          "type": "integer",
+          "description": "Timeout in seconds (default: 30)",
+          "default": 30,
+          "minimum": 1,
+          "maximum": 300
+        }
+      },
+      "required": ["type", "prompt"]
+    },
+    "commandHook": {
+      "type": "object",
+      "description": "Bash command hook",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "command"
+        },
+        "command": {
+          "type": "string",
+          "description": "Bash command to execute. Use ${CLAUDE_PLUGIN_ROOT} for portable paths."
+        },
+        "timeout": {
+          "type": "integer",
+          "description": "Timeout in seconds (default: 60)",
+          "default": 60,
+          "minimum": 1,
+          "maximum": 600
+        }
+      },
+      "required": ["type", "command"]
+    }
+  },
+  "required": ["hooks"],
+  "additionalProperties": false,
+  "examples": [
+    {
+      "description": "Example hooks configuration",
+      "hooks": {
+        "PreToolUse": [
+          {
+            "matcher": "Write|Edit",
+            "hooks": [
+              {
+                "type": "prompt",
+                "prompt": "Validate file write safety",
+                "timeout": 30
+              }
+            ]
+          }
+        ],
+        "Stop": [
+          {
+            "matcher": "*",
+            "hooks": [
+              {
+                "type": "prompt",
+                "prompt": "Verify task completion"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

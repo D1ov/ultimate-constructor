@@ -1,0 +1,98 @@
+{
+  "description": "Self-learning hooks with context tracking for Ultimate Constructor plugin",
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Analyze this session for learnable patterns. Check: 1) User corrections to Claude's approach 2) Error resolutions that worked 3) Repeated workflows 4) Quality issues found. Return JSON: {learned: boolean, patterns: [{type: 'workflow'|'validation'|'fix'|'antipattern', name: string, description: string, confidence: number}]}. Return {learned: false} if no patterns worth learning.",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "python \"${CLAUDE_PLUGIN_ROOT}/scripts/context_tracker.py\" extract",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"${CLAUDE_PLUGIN_ROOT}/scripts/context_tracker.py\" track \"$TOOL_NAME\" \"$TOOL_RESULT\" \"$TOOL_SUCCESS\" \"Context: $TOOL_INPUT\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Quick validation of file change. Check for: placeholder text (TODO, FIXME, TBD), invalid YAML/JSON syntax, missing required fields. Return brief feedback if issues found, empty string if OK.",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"${CLAUDE_PLUGIN_ROOT}/scripts/context_tracker.py\" clear",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "python \"${CLAUDE_PLUGIN_ROOT}/scripts/apply_learned.py\" check",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "*",
+        "condition": "learned_patterns_available",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Learned patterns are available for application. Run /uc:status to see them, or /uc:improve apply to apply automatically.",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  },
+  "context_tracking": {
+    "enabled": true,
+    "description": "Success-based self-learning that tracks tool calls and their outcomes",
+    "features": {
+      "track_all_tools": true,
+      "success_threshold": 0.7,
+      "min_successes_to_learn": 2,
+      "track_user_confirmations": true,
+      "store_antipatterns": true,
+      "auto_extract_on_stop": true,
+      "clear_on_session_start": true
+    },
+    "confidence_calculation": {
+      "base": "successes / (successes + failures)",
+      "confirmation_boost": "+10% per user confirmation",
+      "repetition_boost": "+5% per success (max 20%)",
+      "max_confidence": 0.99
+    },
+    "thresholds": {
+      "auto_apply": 0.9,
+      "manual_review": 0.7,
+      "skip": 0.7
+    }
+  }
+}
