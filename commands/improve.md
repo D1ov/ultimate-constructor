@@ -21,7 +21,74 @@ tools: Read, Write, Edit, Glob, Grep, Bash, Task, AskUserQuestion
 
 # Improve Component Command
 
-Analyze and improve existing Claude Code components using the full self-* organization.
+Analyze and improve existing Claude Code components using the full self-* organization with ALL 15 agents.
+
+## IMPORTANT: Full Pipeline Requirement
+
+**ALWAYS** run the complete 15-agent pipeline for any improvement:
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                      MANDATORY FULL PIPELINE                                │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  PHASE 1: EXECUTIVE LAYER (Analysis & Planning)                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐   │
+│  │ 1. constructor-architect   → Analyze structure, identify issues     │   │
+│  │ 2. constructor-planner     → Create improvement plan                │   │
+│  │ 3. constructor-delegator   → Coordinate if multiple components      │   │
+│  └─────────────────────────────────────────────────────────────────────┘   │
+│                                    ↓                                        │
+│  PHASE 2: QUALITY LAYER (Validation)                                        │
+│  ┌─────────────────────────────────────────────────────────────────────┐   │
+│  │ 4. constructor-tester      → Structure and syntax validation        │   │
+│  │ 5. constructor-reviewer    → Quality scoring (0-100)                │   │
+│  │ 6. constructor-qa          → Comprehensive QA checklist             │   │
+│  │ 7. constructor-validator   → Schema validation                      │   │
+│  └─────────────────────────────────────────────────────────────────────┘   │
+│                                    ↓                                        │
+│  PHASE 3: SECURITY LAYER (Security Audit)                                   │
+│  ┌─────────────────────────────────────────────────────────────────────┐   │
+│  │ 8. constructor-pentester   → Security vulnerabilities               │   │
+│  │ 9. constructor-auditor     → Audit trail, integrity check           │   │
+│  │ 10. constructor-compliance → Standards compliance                   │   │
+│  └─────────────────────────────────────────────────────────────────────┘   │
+│                                    ↓                                        │
+│  PHASE 4: EVOLUTION LAYER (Improvement & Learning)                          │
+│  ┌─────────────────────────────────────────────────────────────────────┐   │
+│  │ 11. constructor-executor   → Apply approved changes                 │   │
+│  │ 12. constructor-refactor   → Code/structure improvements            │   │
+│  │ 13. constructor-optimizer  → Performance optimization               │   │
+│  │ 14. constructor-learner    → Extract patterns for future            │   │
+│  │ 15. constructor-finalizer  → Complete, document, update changelog   │   │
+│  └─────────────────────────────────────────────────────────────────────┘   │
+│                                    ↓                                        │
+│  PHASE 5: ACCEPTANCE GATE                                                   │
+│  ┌─────────────────────────────────────────────────────────────────────┐   │
+│  │ constructor-acceptance     → Final quality gate (score >= 80?)      │   │
+│  │                              If FAIL → Loop back to PHASE 4         │   │
+│  └─────────────────────────────────────────────────────────────────────┘   │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+## IMPORTANT: Check Linked Components
+
+When improving an **Agent** that has `skills:` in frontmatter:
+1. Parse the skills list from frontmatter
+2. Find each linked skill file
+3. Ask user: "This agent uses X skills. Improve them too?"
+4. If yes, add them to improvement queue
+
+When improving a **Plugin**:
+1. List all agents, skills, commands, hooks in plugin
+2. Ask user which components to include
+3. Process selected components through full pipeline
+
+When improving a **Skill** that references other files:
+1. Check references/ directory
+2. Check for scripts/ directory
+3. Offer to analyze referenced files
 
 ## Modes
 
@@ -236,9 +303,9 @@ If approved, deploy organization:
 
 ## Standard Improvement Workflow
 
-For non-analyze mode (`/uc:improve ./my-skill`):
+**ALL improvements use the full 15-agent pipeline.**
 
-### Step 1: Identify Component
+### Step 1: Identify Component & Linked Components
 
 Determine component type from path:
 - Directory with SKILL.md → Skill
@@ -246,54 +313,137 @@ Determine component type from path:
 - hooks.json → Hooks configuration
 - Directory with plugin.json → Plugin
 
-### Step 2: Launch Self-Tester Agent
+**Check for linked components:**
+```
+If Agent:
+  - Parse `skills:` field from frontmatter
+  - Find each skill file
+  - Ask: "Improve linked skills too? [Y/n/select]"
 
-Run validation tests:
+If Skill:
+  - Check for references/ directory
+  - Check for scripts/ directory
+
+If Plugin:
+  - List all components (agents/, skills/, commands/, hooks/)
+  - Ask which to include in improvement
+```
+
+### Step 2: EXECUTIVE LAYER
+
+**constructor-architect** (Agent 1):
+- Analyze overall structure
+- Identify architectural issues
+- Suggest restructuring if needed
+
+**constructor-planner** (Agent 2):
+- Create detailed improvement plan
+- Prioritize by impact
+- Estimate score improvements
+
+**constructor-delegator** (Agent 3):
+- If multiple components, coordinate order
+- Manage dependencies between components
+
+### Step 3: QUALITY LAYER
+
+**constructor-tester** (Agent 4):
 - Structure tests (files exist, valid YAML)
 - Content tests (triggers, boundaries)
 - Quality tests (examples, antipatterns)
 
-Output: Current score and issues list
-
-### Step 3: Launch Self-Reviewer Agent
-
-Deep quality analysis:
+**constructor-reviewer** (Agent 5):
+- Deep quality analysis
 - Compare against best practices
-- Identify improvement opportunities
 - Score current quality (0-100)
-- Prioritize improvements by impact
 
-### Step 4: Present Analysis
+**constructor-qa** (Agent 6):
+- Comprehensive QA checklist
+- Edge case verification
+- Integration testing
+
+**constructor-validator** (Agent 7):
+- Schema validation
+- Format validation
+- Reference validation
+
+### Step 4: SECURITY LAYER
+
+**constructor-pentester** (Agent 8):
+- Check for dangerous tool permissions
+- Identify injection risks
+- Audit Bash commands if present
+
+**constructor-auditor** (Agent 9):
+- Create audit trail
+- Verify integrity
+- Log all findings
+
+**constructor-compliance** (Agent 10):
+- Check Claude Code standards
+- Verify best practices compliance
+- Flag deviations
+
+### Step 5: Present Analysis & Get Approval
 
 ```
-Component: my-skill
-Type: Skill
-Current Score: 67/100
-
-Issues Found:
-1. [HIGH] Description lacks specific triggers
-2. [MEDIUM] Missing boundaries (DON'T section)
-3. [LOW] No examples provided
-
-Recommended Improvements:
-1. Add trigger phrases: "phrase1", "phrase2"
-2. Add "## DON'T" section
-3. Add working examples
+╔══════════════════════════════════════════════════════════════════╗
+║                    FULL ANALYSIS REPORT                          ║
+╠══════════════════════════════════════════════════════════════════╣
+║  Component: my-agent                                             ║
+║  Type: Agent                                                     ║
+║  Linked Skills: 3 (victoria-api-tester, victoria-mock-data, ...) ║
+║                                                                  ║
+║  EXECUTIVE LAYER FINDINGS:                                       ║
+║  - Architecture: Minor issues                                    ║
+║  - Plan: 5 improvements identified                               ║
+║                                                                  ║
+║  QUALITY LAYER SCORES:                                           ║
+║  - Tester: 78/100                                                ║
+║  - Reviewer: 76/100                                              ║
+║  - QA: PASS (3 warnings)                                         ║
+║  - Validator: PASS                                               ║
+║                                                                  ║
+║  SECURITY LAYER:                                                 ║
+║  - Pentester: 1 medium risk (Bash too broad)                     ║
+║  - Auditor: Clean                                                ║
+║  - Compliance: 2 deviations                                      ║
+║                                                                  ║
+║  Apply improvements? [Y/n/select]                                ║
+║  Also improve linked skills? [Y/n/select]                        ║
+╚══════════════════════════════════════════════════════════════════╝
 ```
 
-### Step 5: User Approval
+### Step 6: EVOLUTION LAYER (Apply Changes)
 
-Ask which improvements to apply:
-- All recommended
-- Select specific
-- Skip and keep current
+**constructor-executor** (Agent 11):
+- Apply approved changes
+- Make targeted edits
 
-### Step 6: Apply and Validate
+**constructor-refactor** (Agent 12):
+- Apply code/structure improvements
+- Clean up redundancy
 
-1. Make targeted edits
-2. Re-run validation
-3. Show before/after comparison
-4. Update changelog
+**constructor-optimizer** (Agent 13):
+- Optimize performance
+- Reduce file size if needed
+
+**constructor-learner** (Agent 14):
+- Extract patterns for future
+- Update learned/patterns.json
+
+**constructor-finalizer** (Agent 15):
+- Update CHANGELOG.md
+- Create summary report
+- Archive session data
+
+### Step 7: ACCEPTANCE GATE
+
+**constructor-acceptance**:
+- Re-run quality checks
+- Verify score >= 80
+- If FAIL: Loop back to Step 6 (max 3 iterations)
+- If PASS: Complete
 
 ## Applying Learned Patterns
 

@@ -1,5 +1,5 @@
 ---
-name: ultimate-constructor
+name: constructor
 description: |
   Ultimate constructor for Claude Code components with full self-* pipeline.
   Use when user wants to: "create a skill", "create an agent", "create a plugin",
@@ -21,7 +21,7 @@ Create Claude Code skills, agents, plugins, and hooks through guided Q&A with co
 
 ## IMPORTANT: Initial Interaction
 
-When the user invokes `/ultimate-constructor` (or `/uc:constructor`) without a specific subcommand, you MUST first ask what action they want to perform using AskUserQuestion with these options:
+When the user invokes `/uc:constructor` without a specific subcommand, you MUST first ask what action they want to perform using AskUserQuestion with these options:
 
 1. **Create Component** - Create a new skill, agent, plugin, or hook
 2. **Improve Existing** - Analyze and improve an existing component
