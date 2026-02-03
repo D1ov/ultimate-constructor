@@ -10,7 +10,11 @@
   "plugins": [
     {
       "name": "ultimate-constructor",
-      "source": ".",
+      "source": {
+        "source": "github",
+        "repo": "D1ov/ultimate-constructor",
+        "ref": "main"
+      },
       "description": "Ultimate constructor for Claude Code components with full self-* pipeline. Creates skills, agents, plugins, and hooks with 15+ specialized agents.",
       "version": "1.0.0",
       "author": {
