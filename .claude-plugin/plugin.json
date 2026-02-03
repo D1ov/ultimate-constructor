@@ -1,6 +1,6 @@
 {
   "name": "ultimate-constructor",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Ultimate constructor for Claude Code components with full self-* pipeline. Creates skills, agents, plugins, and hooks with 15+ specialized agents.",
   "author": {
     "name": "D1ov"
@@ -16,6 +16,7 @@
     "hooks",
     "self-learning"
   ],
+  "prefix": "uc",
   "commands": "./commands/",
   "skills": "./skills/",
   "agents": [

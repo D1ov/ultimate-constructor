@@ -19,6 +19,28 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Task, AskUserQuestion
 
 Create Claude Code skills, agents, plugins, and hooks through guided Q&A with comprehensive self-* pipeline validation.
 
+## IMPORTANT: Initial Interaction
+
+When the user invokes `/ultimate-constructor` (or `/uc:constructor`) without a specific subcommand, you MUST first ask what action they want to perform using AskUserQuestion with these options:
+
+1. **Create Component** - Create a new skill, agent, plugin, or hook
+2. **Improve Existing** - Analyze and improve an existing component
+3. **Extract Patterns** - Extract reusable patterns from conversation
+4. **Check Status** - View learned patterns and metrics
+
+DO NOT assume the user wants to create something. Always offer all options first.
+
+If the user directly uses a subcommand (e.g., `/uc:create`, `/uc:improve`), skip this step and proceed with that action.
+
+## Available Commands
+
+| Command | Description |
+|---------|-------------|
+| `/uc:create [type] [name]` | Create new component (skill, agent, plugin, hook) |
+| `/uc:improve <path>` | Analyze and improve existing component |
+| `/uc:extract [type]` | Extract patterns from conversation |
+| `/uc:status [detail]` | View learned patterns and metrics |
+
 ## Quick Start
 
 ### Create a Component
