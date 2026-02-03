@@ -1,12 +1,12 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Plugin Manifest Schema",
-  "description": "Schema for plugin.json manifest files in Claude Code plugins",
+  "description": "Schema for plugin.json manifest files in Claude Code plugins. Based on official docs: https://code.claude.com/docs/en/plugins-reference",
   "type": "object",
   "properties": {
     "name": {
       "type": "string",
-      "description": "Plugin identifier using lowercase letters, numbers, and hyphens",
+      "description": "Unique identifier (kebab-case, no spaces)",
       "pattern": "^[a-z0-9-]+$"
     },
     "version": {
@@ -16,12 +16,12 @@
     },
     "description": {
       "type": "string",
-      "description": "Brief description of plugin functionality",
+      "description": "Brief explanation of plugin purpose",
       "maxLength": 500
     },
     "author": {
       "type": "object",
-      "description": "Plugin author information",
+      "description": "Author information",
       "properties": {
         "name": {"type": "string"},
         "email": {"type": "string", "format": "email"},
@@ -29,51 +29,81 @@
       },
       "required": ["name"]
     },
-    "keywords": {
-      "type": "array",
-      "description": "Search keywords for marketplace discovery",
-      "items": {"type": "string"},
-      "maxItems": 10
-    },
-    "commands": {
+    "homepage": {
       "type": "string",
-      "description": "Path to commands directory (relative to plugin root)",
-      "default": "./commands/"
-    },
-    "agents": {
-      "type": "string",
-      "description": "Path to agents directory (relative to plugin root)",
-      "default": "./agents/"
-    },
-    "skills": {
-      "type": "string",
-      "description": "Path to skills directory (relative to plugin root)",
-      "default": "./skills/"
-    },
-    "hooks": {
-      "type": "string",
-      "description": "Path to hooks configuration file (relative to plugin root)",
-      "default": "./hooks/hooks.json"
-    },
-    "mcp": {
-      "type": "string",
-      "description": "Path to MCP configuration file",
-      "default": "./.mcp.json"
+      "description": "Documentation URL",
+      "format": "uri"
     },
     "repository": {
       "type": "string",
-      "description": "Git repository URL",
-      "format": "uri"
-    },
-    "homepage": {
-      "type": "string",
-      "description": "Plugin homepage URL",
+      "description": "Source code URL",
       "format": "uri"
     },
     "license": {
       "type": "string",
-      "description": "SPDX license identifier",
+      "description": "SPDX license identifier (MIT, Apache-2.0, etc.)",
       "examples": ["MIT", "Apache-2.0", "GPL-3.0"]
+    },
+    "keywords": {
+      "type": "array",
+      "description": "Discovery tags",
+      "items": {"type": "string"},
+      "maxItems": 10
+    },
+    "commands": {
+      "oneOf": [
+        {"type": "string"},
+        {"type": "array", "items": {"type": "string"}}
+      ],
+      "description": "Additional command files/directories. Can be string path or array of paths.",
+      "examples": ["./commands/", ["./custom/cmd1.md", "./custom/cmd2.md"]]
+    },
+    "agents": {
+      "oneOf": [
+        {"type": "string"},
+        {"type": "array", "items": {"type": "string"}}
+      ],
+      "description": "Additional agent files. Can be string path to directory or array of file paths.",
+      "examples": ["./agents/", ["./agents/reviewer.md", "./agents/tester.md"]]
+    },
+    "skills": {
+      "oneOf": [
+        {"type": "string"},
+        {"type": "array", "items": {"type": "string"}}
+      ],
+      "description": "Additional skill directories. Can be string path or array of paths.",
+      "examples": ["./skills/", ["./skills/pdf-processor/", "./skills/code-reviewer/"]]
+    },
+    "hooks": {
+      "oneOf": [
+        {"type": "string"},
+        {"type": "object"}
+      ],
+      "description": "Hook config path or inline config",
+      "examples": ["./hooks/hooks.json", {"hooks": {"PostToolUse": []}}]
+    },
+    "mcpServers": {
+      "oneOf": [
+        {"type": "string"},
+        {"type": "object"}
+      ],
+      "description": "MCP config path or inline config",
+      "examples": ["./.mcp.json", {"mcpServers": {}}]
+    },
+    "lspServers": {
+      "oneOf": [
+        {"type": "string"},
+        {"type": "object"}
+      ],
+      "description": "LSP config path or inline config for code intelligence",
+      "examples": ["./.lsp.json"]
+    },
+    "outputStyles": {
+      "oneOf": [
+        {"type": "string"},
+        {"type": "array", "items": {"type": "string"}}
+      ],
+      "description": "Additional output style files/directories"
     },
     "engines": {
       "type": "object",
@@ -81,8 +111,7 @@
       "properties": {
         "claude-code": {
           "type": "string",
-          "description": "Required Claude Code version range",
-          "examples": [">=1.0.0", "^2.0.0"]
+          "description": "Required Claude Code version range"
         }
       }
     },
@@ -92,19 +121,28 @@
       "additionalProperties": {"type": "string"}
     }
   },
-  "required": ["name", "version", "description"],
+  "required": ["name"],
   "additionalProperties": true,
   "examples": [
     {
-      "name": "my-plugin",
-      "version": "1.0.0",
-      "description": "Example plugin for Claude Code",
-      "author": {"name": "Developer"},
-      "keywords": ["example", "demo"],
-      "commands": "./commands/",
-      "agents": "./agents/",
-      "skills": "./skills/",
-      "hooks": "./hooks/hooks.json"
+      "name": "plugin-name",
+      "version": "1.2.0",
+      "description": "Brief plugin description",
+      "author": {
+        "name": "Author Name",
+        "email": "author@example.com",
+        "url": "https://github.com/author"
+      },
+      "homepage": "https://docs.example.com/plugin",
+      "repository": "https://github.com/author/plugin",
+      "license": "MIT",
+      "keywords": ["keyword1", "keyword2"],
+      "commands": ["./custom/commands/special.md"],
+      "agents": "./custom/agents/",
+      "skills": "./custom/skills/",
+      "hooks": "./config/hooks.json",
+      "mcpServers": "./mcp-config.json",
+      "lspServers": "./.lsp.json"
     }
   ]
 }

@@ -1,9 +1,12 @@
 ---
-name: constructor-tester
 description: |
   Validate created components. Runs after constructor-executor.
   Checks structure, content, and quality. Returns score and issues.
   NOT for: fixing issues (use constructor-refactor).
+capabilities:
+  - structure-validation
+  - schema-checking
+  - quality-scoring
 tools: Read, Grep, Glob, Bash
 model: haiku
 ---

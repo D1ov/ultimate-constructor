@@ -1,17 +1,18 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Agent Frontmatter Schema",
-  "description": "Schema for agent markdown YAML frontmatter in Claude Code",
+  "description": "Schema for agent markdown YAML frontmatter in Claude Code. Based on official docs: https://code.claude.com/docs/en/plugins-reference",
   "type": "object",
   "properties": {
-    "name": {
-      "type": "string",
-      "description": "Unique identifier using lowercase letters and hyphens",
-      "pattern": "^[a-z0-9-]+$"
-    },
     "description": {
       "type": "string",
-      "description": "When Claude should delegate to this subagent. Include 'use proactively' for automatic invocation."
+      "description": "What this agent specializes in. When Claude should delegate to this subagent. Include 'use proactively' for automatic invocation."
+    },
+    "capabilities": {
+      "type": "array",
+      "description": "List of specific capabilities this agent has",
+      "items": {"type": "string"},
+      "examples": [["task1", "task2", "task3"], ["code-review", "security-analysis"]]
     },
     "tools": {
       "type": "string",
@@ -50,25 +51,21 @@
     },
     "color": {
       "type": "string",
-      "description": "Background color for UI identification. Choose via /agents interactive setup.",
+      "description": "Background color for UI identification",
       "examples": ["blue", "purple", "green", "orange", "red", "cyan", "magenta", "yellow"]
-    },
-    "capabilities": {
-      "type": "array",
-      "description": "List of specific capabilities this agent has",
-      "items": {"type": "string"},
-      "examples": [["code-review", "security-analysis", "performance-optimization"]]
     }
   },
-  "required": ["name", "description"],
+  "required": ["description"],
   "additionalProperties": true,
   "examples": [
     {
-      "name": "code-reviewer",
+      "description": "What this agent specializes in",
+      "capabilities": ["task1", "task2", "task3"]
+    },
+    {
       "description": "Expert code reviewer. Use proactively after code changes.",
       "tools": "Read, Grep, Glob, Bash",
       "model": "sonnet",
-      "color": "purple",
       "capabilities": ["code-review", "security-analysis"]
     }
   ]
