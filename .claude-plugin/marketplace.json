@@ -1,0 +1,40 @@
+{
+  "name": "d1ov-plugins",
+  "owner": {
+    "name": "D1ov"
+  },
+  "metadata": {
+    "description": "D1ov's Claude Code plugins collection",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "ultimate-constructor",
+      "source": ".",
+      "description": "Ultimate constructor for Claude Code components with full self-* pipeline. Creates skills, agents, plugins, and hooks with 15+ specialized agents.",
+      "version": "1.0.0",
+      "author": {
+        "name": "D1ov"
+      },
+      "homepage": "https://github.com/D1ov/ultimate-constructor",
+      "repository": "https://github.com/D1ov/ultimate-constructor",
+      "license": "MIT",
+      "keywords": [
+        "constructor",
+        "skills",
+        "agents",
+        "plugins",
+        "hooks",
+        "self-learning",
+        "automation"
+      ],
+      "category": "development",
+      "tags": [
+        "creator",
+        "builder",
+        "organization",
+        "self-pipeline"
+      ]
+    }
+  ]
+}
