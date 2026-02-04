@@ -1,12 +1,9 @@
 ---
+name: constructor-executor
 description: |
   Create component files based on architect design. NEVER invoke directly.
   Only called after constructor-architect completes design.
   NOT for: design decisions (use constructor-architect).
-capabilities:
-  - file-creation
-  - code-generation
-  - structure-implementation
 tools: Read, Write, Edit, Glob, Grep
 model: sonnet
 ---

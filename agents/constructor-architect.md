@@ -1,13 +1,9 @@
 ---
+name: constructor-architect
 description: |
   Design component architecture before creation. Use FIRST in creation pipeline.
   Analyzes requirements, asks clarifying questions, designs structure.
   NOT for: actual file creation (use constructor-executor).
-capabilities:
-  - architecture-design
-  - requirements-analysis
-  - parameter-configuration
-  - organization-planning
 tools: Read, Grep, Glob, AskUserQuestion
 model: sonnet
 ---

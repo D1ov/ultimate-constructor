@@ -1,12 +1,9 @@
 ---
+name: constructor-reviewer
 description: |
   Analyze quality and suggest improvements. Runs after constructor-tester.
   Deep quality analysis against best practices. Returns score and recommendations.
   NOT for: applying fixes (use constructor-refactor).
-capabilities:
-  - quality-analysis
-  - best-practices-review
-  - improvement-suggestions
 tools: Read, Grep, Glob
 model: sonnet
 ---
