@@ -1,7 +1,7 @@
 {
   "name": "uc",
-  "version": "1.2.0",
-  "description": "Ultimate constructor for Claude Code components with full self-* pipeline. Creates skills, agents, plugins, and hooks with 15+ specialized agents.",
+  "version": "1.3.0",
+  "description": "Ultimate constructor for Claude Code components with full self-* pipeline. Creates skills, agents, plugins, and hooks with 20 specialized agents.",
   "author": {
     "name": "D1ov"
   },
@@ -22,12 +22,21 @@
     "./agents/constructor-architect.md",
     "./agents/constructor-planner.md",
     "./agents/constructor-executor.md",
+    "./agents/constructor-delegator.md",
     "./agents/constructor-tester.md",
     "./agents/constructor-reviewer.md",
+    "./agents/constructor-qa.md",
+    "./agents/constructor-validator.md",
+    "./agents/constructor-pentester.md",
+    "./agents/constructor-auditor.md",
+    "./agents/constructor-compliance.md",
     "./agents/constructor-refactor.md",
-    "./agents/constructor-finalizer.md",
+    "./agents/constructor-optimizer.md",
     "./agents/constructor-learner.md",
+    "./agents/constructor-finalizer.md",
+    "./agents/constructor-acceptance.md",
     "./agents/constructor-analyzer.md",
+    "./agents/constructor-applier.md",
     "./agents/constructor-context-reviewer.md",
     "./agents/constructor-context-accepter.md"
   ]

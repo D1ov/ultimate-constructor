@@ -12,7 +12,7 @@ description: |
   NOT for: running existing skills, debugging code, general development,
   modifying existing components outside NEW/skills/.
 version: 1.0.0
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Task, AskUserQuestion
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Task, AskUserQuestion, TodoWrite
 ---
 
 # Ultimate Constructor

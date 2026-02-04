@@ -16,16 +16,109 @@ examples:
   - "/uc:improve analyze ./my-agent"
   - "/uc:improve analyze ./my-skill --full"
 model: sonnet
-tools: Read, Write, Edit, Glob, Grep, Bash, Task, AskUserQuestion
+tools: Read, Write, Edit, Glob, Grep, Bash, Task, AskUserQuestion, TodoWrite
 ---
 
 # Improve Component Command
 
-Analyze and improve existing Claude Code components using the full self-* organization with ALL 15 agents.
+Analyze and improve existing Claude Code components using the full self-* organization with ALL 16 agents.
+
+## ⛔ CRITICAL: MANDATORY EXECUTION PROTOCOL ⛔
+
+**YOU MUST FOLLOW THIS PROTOCOL EXACTLY. NO SHORTCUTS. NO SKIPPING AGENTS.**
+
+### STEP 0: CREATE FULL TODO LIST IMMEDIATELY
+
+Before doing ANYTHING else, you MUST use TodoWrite to create tasks for ALL 16 agents:
+
+```
+TodoWrite([
+  // PHASE 1: EXECUTIVE LAYER
+  {content: "Run constructor-architect agent", status: "pending", activeForm: "Running architect"},
+  {content: "Run constructor-planner agent", status: "pending", activeForm: "Running planner"},
+  {content: "Run constructor-delegator agent", status: "pending", activeForm: "Running delegator"},
+
+  // PHASE 2: QUALITY LAYER
+  {content: "Run constructor-tester agent", status: "pending", activeForm: "Running tester"},
+  {content: "Run constructor-reviewer agent", status: "pending", activeForm: "Running reviewer"},
+  {content: "Run constructor-qa agent", status: "pending", activeForm: "Running QA"},
+  {content: "Run constructor-validator agent", status: "pending", activeForm: "Running validator"},
+
+  // PHASE 3: SECURITY LAYER
+  {content: "Run constructor-pentester agent", status: "pending", activeForm: "Running pentester"},
+  {content: "Run constructor-auditor agent", status: "pending", activeForm: "Running auditor"},
+  {content: "Run constructor-compliance agent", status: "pending", activeForm: "Running compliance"},
+
+  // PHASE 4: EVOLUTION LAYER
+  {content: "Run constructor-executor agent", status: "pending", activeForm: "Running executor"},
+  {content: "Run constructor-refactor agent", status: "pending", activeForm: "Running refactor"},
+  {content: "Run constructor-optimizer agent", status: "pending", activeForm: "Running optimizer"},
+  {content: "Run constructor-learner agent", status: "pending", activeForm: "Running learner"},
+  {content: "Run constructor-finalizer agent", status: "pending", activeForm: "Running finalizer"},
+
+  // PHASE 5: ACCEPTANCE GATE
+  {content: "Run constructor-acceptance agent", status: "pending", activeForm: "Running acceptance"}
+])
+```
+
+### ⛔ STOP GATES - YOU CANNOT PROCEED WITHOUT THESE
+
+| Gate | Requirement | Action if Failed |
+|------|-------------|------------------|
+| GATE 1 | Todo list created with 16 items | Create it NOW |
+| GATE 2 | Component + ALL linked files read | Read them ALL |
+| GATE 3 | Each agent invoked via Task tool | Invoke missing agents |
+| GATE 4 | Final score >= 80 | Loop back to PHASE 4 |
+| GATE 5 | Folder structure complete | constructor-finalizer verifies |
+| GATE 6 | Self-learning enabled | constructor-learner creates patterns.json |
+
+### HOW TO INVOKE EACH AGENT
+
+You MUST use the Task tool with the exact subagent_type for each agent:
+
+```
+Task({
+  description: "Architect analysis",
+  prompt: "Analyze [component] structure and design...",
+  subagent_type: "uc:constructor-architect"
+})
+```
+
+**Available agent types (ALL 20):**
+
+EXECUTIVE LAYER:
+- `uc:constructor-architect` - Design structure, ask questions
+- `uc:constructor-planner` - Create execution plan with dependencies
+- `uc:constructor-executor` - Create files from design
+- `uc:constructor-delegator` - Coordinate multi-agent work
+
+QUALITY LAYER:
+- `uc:constructor-tester` - Validate structure and content
+- `uc:constructor-reviewer` - Score quality, identify improvements
+- `uc:constructor-qa` - Comprehensive quality assurance
+- `uc:constructor-validator` - Schema and format validation
+
+SECURITY LAYER:
+- `uc:constructor-pentester` - Find security vulnerabilities
+- `uc:constructor-auditor` - Create audit trail, verify integrity
+- `uc:constructor-compliance` - Check standards compliance
+
+EVOLUTION LAYER:
+- `uc:constructor-refactor` - Apply improvements
+- `uc:constructor-optimizer` - Optimize performance
+- `uc:constructor-learner` - Extract patterns for future
+- `uc:constructor-finalizer` - Complete and document
+- `uc:constructor-acceptance` - Final quality gate
+
+ANALYSIS & CONTEXT:
+- `uc:constructor-analyzer` - Deep analysis for existing components
+- `uc:constructor-applier` - Apply learned patterns
+- `uc:constructor-context-reviewer` - Review extracted content
+- `uc:constructor-context-accepter` - Final acceptance for context
 
 ## IMPORTANT: Full Pipeline Requirement
 
-**ALWAYS** run the complete 15-agent pipeline for any improvement:
+**ALWAYS** run the complete 16-agent pipeline for any improvement:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
@@ -72,23 +165,155 @@ Analyze and improve existing Claude Code components using the full self-* organi
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## IMPORTANT: Check Linked Components
+## ⛔ MANDATORY: Analyze ALL Linked Components
 
-When improving an **Agent** that has `skills:` in frontmatter:
-1. Parse the skills list from frontmatter
-2. Find each linked skill file
-3. Ask user: "This agent uses X skills. Improve them too?"
-4. If yes, add them to improvement queue
+### For Agents with `skills:` field
 
-When improving a **Plugin**:
-1. List all agents, skills, commands, hooks in plugin
-2. Ask user which components to include
-3. Process selected components through full pipeline
+**YOU MUST:**
+1. Parse `skills:` from frontmatter
+2. Search for each skill file using Glob
+3. Read ALL found skill files
+4. Add to improvement queue
 
-When improving a **Skill** that references other files:
-1. Check references/ directory
-2. Check for scripts/ directory
-3. Offer to analyze referenced files
+```
+Example agent frontmatter:
+  skills: victoria-api-tester, victoria-mock-data, victoria-redis-debug
+
+YOU MUST find and read:
+  - **/victoria-api-tester/**/SKILL.md
+  - **/victoria-mock-data/**/SKILL.md
+  - **/victoria-redis-debug/**/SKILL.md
+```
+
+### For Plugins
+**YOU MUST:**
+1. Read plugin.json
+2. List ALL components (agents/, skills/, commands/, hooks/)
+3. Ask user which to include (default: ALL)
+4. Process each through full pipeline
+
+### For Skills with references
+**YOU MUST:**
+1. Check if references/ exists → read all files
+2. Check if scripts/ exists → read all files
+3. Include in analysis scope
+
+## ⛔ MANDATORY: Create Full Folder Structure
+
+After improvement, the component MUST have this structure:
+
+### For Agents
+```
+my-agent/
+├── my-agent.md              # Main agent file
+├── references/
+│   ├── patterns.md          # Workflow patterns
+│   ├── schemas.md           # Data schemas used
+│   └── api-reference.md     # API docs if applicable
+├── scripts/
+│   ├── validate.py          # Validation script
+│   └── test.py              # Test script
+├── learned/
+│   ├── patterns.json        # Extracted patterns
+│   └── improvements/        # Applied improvements history
+└── hooks/
+    └── hooks.json           # Self-learning hooks
+```
+
+### For Skills
+```
+my-skill/
+├── SKILL.md                 # Main skill file
+├── references/
+│   ├── detailed-guide.md    # Detailed documentation
+│   ├── examples.md          # Extended examples
+│   └── troubleshooting.md   # Common issues
+├── scripts/
+│   └── validate.py          # Validation script
+└── learned/
+    └── patterns.json        # Extracted patterns
+```
+
+### Agent Responsibilities for Structure
+
+| Agent | Responsibility |
+|-------|----------------|
+| **constructor-architect** | Design folder structure in improvement plan |
+| **constructor-planner** | Include structure tasks in execution plan |
+| **constructor-executor** | Create ALL folders and placeholder files |
+| **constructor-learner** | Create learned/patterns.json, extract patterns |
+| **constructor-finalizer** | Verify structure complete, create hooks.json |
+
+## ⛔ MANDATORY: Self-Learning Integration
+
+**constructor-learner** and **constructor-finalizer** MUST create:
+
+### 1. hooks/hooks.json (created by constructor-finalizer)
+```json
+{
+  "hooks": [
+    {
+      "event": "Stop",
+      "script": "python ${COMPONENT_PATH}/scripts/extract_patterns.py",
+      "timeout": 30000
+    }
+  ],
+  "context_tracking": {
+    "enabled": true,
+    "track_tool_outcomes": true,
+    "min_confidence": 0.7
+  }
+}
+```
+
+### 2. learned/patterns.json (created by constructor-learner)
+```json
+{
+  "patterns": [],
+  "antipatterns": [],
+  "workflows": [],
+  "last_updated": "ISO-DATE",
+  "sessions_analyzed": 1,
+  "improvement_session": {
+    "date": "ISO-DATE",
+    "before_score": 0,
+    "after_score": 0,
+    "changes_applied": []
+  }
+}
+```
+
+### 3. scripts/extract_patterns.py (created by constructor-executor)
+Basic pattern extraction script template.
+
+### Agent Execution Checklist
+
+```
+constructor-architect:
+  □ Analyze current structure
+  □ Design target structure with references/, scripts/, learned/, hooks/
+  □ Document what files need to be created
+
+constructor-executor:
+  □ Create references/ folder
+  □ Create scripts/ folder
+  □ Create learned/ folder
+  □ Create hooks/ folder
+  □ Create placeholder files
+
+constructor-learner:
+  □ Create learned/patterns.json
+  □ Extract patterns from improvement session
+  □ Document antipatterns found
+  □ Save workflow patterns
+
+constructor-finalizer:
+  □ Create hooks/hooks.json with self-learning
+  □ Verify ALL folders exist
+  □ Verify ALL required files exist
+  □ Update CHANGELOG if exists
+  □ Create improvement report
+```
 
 ## Modes
 
@@ -105,377 +330,12 @@ When improving a **Skill** that references other files:
 /uc:improve apply --preview    # Preview only, don't apply
 ```
 
-### Mode 3: Deep Analysis (NEW)
+### Mode 3: Deep Analysis
 ```
 /uc:improve analyze ./my-agent           # Full organization analysis
 /uc:improve analyze ./my-skill --full    # Maximum depth analysis
 /uc:improve analyze ./my-plugin --plan-only  # Only create plan, don't apply
 ```
-
-## Deep Analysis Mode
-
-When using `analyze`, the full organization is deployed to examine the component:
-
-```
-/uc:improve analyze ./my-agent
-
-╔══════════════════════════════════════════════════════════════════╗
-║                 FULL ORGANIZATION ANALYSIS                       ║
-╠══════════════════════════════════════════════════════════════════╣
-║                                                                  ║
-║  Component: my-agent                                             ║
-║  Type: Agent                                                     ║
-║  Location: agents/my-agent.md                                    ║
-║                                                                  ║
-║  Deploying analysis organization...                              ║
-║                                                                  ║
-║  ┌─────────────────────────────────────────────────────────────┐ ║
-║  │ EXECUTIVE LAYER                                              │ ║
-║  │ ├── constructor-architect → Analyzing structure             │ ║
-║  │ └── constructor-planner → Creating improvement plan         │ ║
-║  ├─────────────────────────────────────────────────────────────┤ ║
-║  │ QUALITY LAYER                                                │ ║
-║  │ ├── constructor-tester → Running validation tests           │ ║
-║  │ ├── constructor-reviewer → Quality analysis                 │ ║
-║  │ ├── constructor-qa → Comprehensive QA check                 │ ║
-║  │ └── constructor-validator → Schema validation               │ ║
-║  ├─────────────────────────────────────────────────────────────┤ ║
-║  │ SECURITY LAYER                                               │ ║
-║  │ ├── constructor-pentester → Security testing                │ ║
-║  │ ├── constructor-auditor → Audit trail review                │ ║
-║  │ └── constructor-compliance → Standards compliance           │ ║
-║  ├─────────────────────────────────────────────────────────────┤ ║
-║  │ EVOLUTION LAYER                                              │ ║
-║  │ ├── constructor-analyzer → Deep analysis                    │ ║
-║  │ ├── constructor-optimizer → Performance optimization        │ ║
-║  │ └── constructor-learner → Pattern extraction                │ ║
-║  └─────────────────────────────────────────────────────────────┘ ║
-║                                                                  ║
-╚══════════════════════════════════════════════════════════════════╝
-```
-
-### Analysis Workflow
-
-#### Step 1: Launch Analyzer Agent
-
-**constructor-analyzer** performs deep examination:
-
-```
-╔══════════════════════════════════════════════════════════════════╗
-║                    DEEP ANALYSIS RESULTS                         ║
-╠══════════════════════════════════════════════════════════════════╣
-║                                                                  ║
-║  STRUCTURE ANALYSIS                                              ║
-║  ├── Frontmatter: ✅ Valid YAML                                  ║
-║  ├── Sections: ⚠️ Missing "Output Format"                        ║
-║  ├── Line count: ✅ 156 lines (under 500)                        ║
-║  └── References: ✅ All exist                                    ║
-║                                                                  ║
-║  CONTENT ANALYSIS                                                ║
-║  ├── Description triggers: ⚠️ Too vague (2 specific triggers)   ║
-║  ├── Boundaries: ❌ Missing "NOT for:" section                   ║
-║  ├── Workflow: ✅ Clear 5-step process                           ║
-║  └── Examples: ⚠️ Only 1 example (recommend 3+)                  ║
-║                                                                  ║
-║  TOOL ANALYSIS                                                   ║
-║  ├── Tools defined: Read, Grep, Glob, Bash                      ║
-║  ├── Tools restrictive: ⚠️ Bash may be too broad                ║
-║  └── Model: sonnet (appropriate for complexity)                  ║
-║                                                                  ║
-║  INTEGRATION ANALYSIS                                            ║
-║  ├── Skills referenced: None                                     ║
-║  ├── Hooks defined: None                                         ║
-║  └── Self-learning: ❌ Not enabled                               ║
-║                                                                  ║
-║  QUALITY METRICS                                                 ║
-║  ├── Overall Score: 62/100                                       ║
-║  ├── Structure: 85/100                                           ║
-║  ├── Content: 55/100                                             ║
-║  ├── Security: 70/100                                            ║
-║  └── Evolution readiness: 30/100                                 ║
-║                                                                  ║
-╚══════════════════════════════════════════════════════════════════╝
-```
-
-#### Step 2: Generate Improvement Plan
-
-Based on analysis, create prioritized plan:
-
-```
-╔══════════════════════════════════════════════════════════════════╗
-║                    IMPROVEMENT PLAN                              ║
-╠══════════════════════════════════════════════════════════════════╣
-║                                                                  ║
-║  Priority 1: CRITICAL (Score Impact: +15)                        ║
-║  ┌────────────────────────────────────────────────────────────┐  ║
-║  │ [1.1] Add boundaries section                               │  ║
-║  │       Add "NOT for:" section in description                │  ║
-║  │       Estimated impact: +10 points                         │  ║
-║  │                                                            │  ║
-║  │ [1.2] Improve trigger specificity                          │  ║
-║  │       Current: "Use for code review"                       │  ║
-║  │       Proposed: "Use when user says 'review my code',      │  ║
-║  │                 'check for bugs', 'analyze this function'" │  ║
-║  │       Estimated impact: +5 points                          │  ║
-║  └────────────────────────────────────────────────────────────┘  ║
-║                                                                  ║
-║  Priority 2: HIGH (Score Impact: +12)                            ║
-║  ┌────────────────────────────────────────────────────────────┐  ║
-║  │ [2.1] Add Output Format section                            │  ║
-║  │       Define expected output structure                     │  ║
-║  │       Estimated impact: +7 points                          │  ║
-║  │                                                            │  ║
-║  │ [2.2] Add more examples (2 additional)                     │  ║
-║  │       Estimated impact: +5 points                          │  ║
-║  └────────────────────────────────────────────────────────────┘  ║
-║                                                                  ║
-║  Priority 3: MEDIUM (Score Impact: +8)                           ║
-║  ┌────────────────────────────────────────────────────────────┐  ║
-║  │ [3.1] Restrict Bash tool to specific commands              │  ║
-║  │       Or remove if not essential                           │  ║
-║  │       Estimated impact: +5 points                          │  ║
-║  │                                                            │  ║
-║  │ [3.2] Enable self-learning capability                      │  ║
-║  │       Add hooks for pattern extraction                     │  ║
-║  │       Estimated impact: +3 points                          │  ║
-║  └────────────────────────────────────────────────────────────┘  ║
-║                                                                  ║
-║  PROJECTED SCORE: 62 → 97/100                                    ║
-║                                                                  ║
-║  Apply improvements? [Y/n/select/plan-only]                      ║
-╚══════════════════════════════════════════════════════════════════╝
-```
-
-#### Step 3: User Selection
-
-Options:
-- **Y** - Apply all improvements
-- **n** - Cancel
-- **select** - Choose specific improvements
-- **plan-only** - Save plan, don't apply
-
-#### Step 4: Apply via Full Pipeline
-
-If approved, deploy organization:
-
-1. **constructor-executor** → Makes changes
-2. **constructor-tester** → Validates
-3. **constructor-reviewer** → Quality check
-4. **constructor-qa** → Comprehensive verification
-5. **constructor-optimizer** → Fine-tune
-6. **constructor-finalizer** → Complete
-
-#### Step 5: Show Results
-
-```
-╔══════════════════════════════════════════════════════════════════╗
-║                 IMPROVEMENT COMPLETE                             ║
-╠══════════════════════════════════════════════════════════════════╣
-║                                                                  ║
-║  Component: my-agent                                             ║
-║                                                                  ║
-║  BEFORE → AFTER                                                  ║
-║  ┌─────────────┬─────────────┐                                   ║
-║  │ Structure   │   85 →  95  │ ████████████████████████████░░   ║
-║  │ Content     │   55 →  90  │ ██████████████████████████████   ║
-║  │ Security    │   70 →  85  │ ████████████████████████████░░   ║
-║  │ Evolution   │   30 →  75  │ ██████████████████████░░░░░░░░   ║
-║  ├─────────────┼─────────────┤                                   ║
-║  │ OVERALL     │   62 →  89  │ ██████████████████████████████   ║
-║  └─────────────┴─────────────┘                                   ║
-║                                                                  ║
-║  Changes Applied:                                                ║
-║  ├── ✅ [1.1] Added boundaries section                           ║
-║  ├── ✅ [1.2] Improved trigger specificity                       ║
-║  ├── ✅ [2.1] Added Output Format section                        ║
-║  ├── ✅ [2.2] Added 2 more examples                              ║
-║  ├── ✅ [3.1] Restricted Bash to 'git' commands only             ║
-║  └── ✅ [3.2] Enabled self-learning hooks                        ║
-║                                                                  ║
-║  Files modified:                                                 ║
-║  ├── agents/my-agent.md                                          ║
-║  └── agents/my-agent/hooks/hooks.json (new)                      ║
-║                                                                  ║
-║  Backup: .backup/my-agent-20260203/                              ║
-║                                                                  ║
-╚══════════════════════════════════════════════════════════════════╝
-```
-
-## Standard Improvement Workflow
-
-**ALL improvements use the full 15-agent pipeline.**
-
-### Step 1: Identify Component & Linked Components
-
-Determine component type from path:
-- Directory with SKILL.md → Skill
-- .md file with agent frontmatter → Agent
-- hooks.json → Hooks configuration
-- Directory with plugin.json → Plugin
-
-**Check for linked components:**
-```
-If Agent:
-  - Parse `skills:` field from frontmatter
-  - Find each skill file
-  - Ask: "Improve linked skills too? [Y/n/select]"
-
-If Skill:
-  - Check for references/ directory
-  - Check for scripts/ directory
-
-If Plugin:
-  - List all components (agents/, skills/, commands/, hooks/)
-  - Ask which to include in improvement
-```
-
-### Step 2: EXECUTIVE LAYER
-
-**constructor-architect** (Agent 1):
-- Analyze overall structure
-- Identify architectural issues
-- Suggest restructuring if needed
-
-**constructor-planner** (Agent 2):
-- Create detailed improvement plan
-- Prioritize by impact
-- Estimate score improvements
-
-**constructor-delegator** (Agent 3):
-- If multiple components, coordinate order
-- Manage dependencies between components
-
-### Step 3: QUALITY LAYER
-
-**constructor-tester** (Agent 4):
-- Structure tests (files exist, valid YAML)
-- Content tests (triggers, boundaries)
-- Quality tests (examples, antipatterns)
-
-**constructor-reviewer** (Agent 5):
-- Deep quality analysis
-- Compare against best practices
-- Score current quality (0-100)
-
-**constructor-qa** (Agent 6):
-- Comprehensive QA checklist
-- Edge case verification
-- Integration testing
-
-**constructor-validator** (Agent 7):
-- Schema validation
-- Format validation
-- Reference validation
-
-### Step 4: SECURITY LAYER
-
-**constructor-pentester** (Agent 8):
-- Check for dangerous tool permissions
-- Identify injection risks
-- Audit Bash commands if present
-
-**constructor-auditor** (Agent 9):
-- Create audit trail
-- Verify integrity
-- Log all findings
-
-**constructor-compliance** (Agent 10):
-- Check Claude Code standards
-- Verify best practices compliance
-- Flag deviations
-
-### Step 5: Present Analysis & Get Approval
-
-```
-╔══════════════════════════════════════════════════════════════════╗
-║                    FULL ANALYSIS REPORT                          ║
-╠══════════════════════════════════════════════════════════════════╣
-║  Component: my-agent                                             ║
-║  Type: Agent                                                     ║
-║  Linked Skills: 3 (victoria-api-tester, victoria-mock-data, ...) ║
-║                                                                  ║
-║  EXECUTIVE LAYER FINDINGS:                                       ║
-║  - Architecture: Minor issues                                    ║
-║  - Plan: 5 improvements identified                               ║
-║                                                                  ║
-║  QUALITY LAYER SCORES:                                           ║
-║  - Tester: 78/100                                                ║
-║  - Reviewer: 76/100                                              ║
-║  - QA: PASS (3 warnings)                                         ║
-║  - Validator: PASS                                               ║
-║                                                                  ║
-║  SECURITY LAYER:                                                 ║
-║  - Pentester: 1 medium risk (Bash too broad)                     ║
-║  - Auditor: Clean                                                ║
-║  - Compliance: 2 deviations                                      ║
-║                                                                  ║
-║  Apply improvements? [Y/n/select]                                ║
-║  Also improve linked skills? [Y/n/select]                        ║
-╚══════════════════════════════════════════════════════════════════╝
-```
-
-### Step 6: EVOLUTION LAYER (Apply Changes)
-
-**constructor-executor** (Agent 11):
-- Apply approved changes
-- Make targeted edits
-
-**constructor-refactor** (Agent 12):
-- Apply code/structure improvements
-- Clean up redundancy
-
-**constructor-optimizer** (Agent 13):
-- Optimize performance
-- Reduce file size if needed
-
-**constructor-learner** (Agent 14):
-- Extract patterns for future
-- Update learned/patterns.json
-
-**constructor-finalizer** (Agent 15):
-- Update CHANGELOG.md
-- Create summary report
-- Archive session data
-
-### Step 7: ACCEPTANCE GATE
-
-**constructor-acceptance**:
-- Re-run quality checks
-- Verify score >= 80
-- If FAIL: Loop back to Step 6 (max 3 iterations)
-- If PASS: Complete
-
-## Applying Learned Patterns
-
-```
-/uc:improve apply
-
-╔══════════════════════════════════════════════════════════════════╗
-║                 LEARNED PATTERNS AVAILABLE                       ║
-╠══════════════════════════════════════════════════════════════════╣
-║                                                                  ║
-║  🟢 High Confidence (auto-apply ready):                          ║
-║     [1] api-error-handling (95%)                                 ║
-║         Applies to: 3 agents                                     ║
-║     [2] yaml-validation-fix (91%)                                ║
-║         Applies to: constructor-tester                           ║
-║                                                                  ║
-║  🟡 Medium Confidence (manual approval):                         ║
-║     [3] workflow-optimization (78%)                              ║
-║     [4] antipattern-detection (72%)                              ║
-║                                                                  ║
-║  Apply [1,2] automatically? [Y/n/all/preview]                    ║
-╚══════════════════════════════════════════════════════════════════╝
-```
-
-### Options
-
-| Flag | Effect |
-|------|--------|
-| (none) | Interactive mode, asks before applying |
-| --auto | Auto-apply patterns with confidence ≥90% |
-| --preview | Show what would change without modifying |
-| --full | Include low-confidence patterns for review |
 
 ## Non-Destructive Mode
 
